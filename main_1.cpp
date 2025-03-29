@@ -23,7 +23,8 @@ int main() {
     display(acc);
     deposit(acc, 3000);
     withdraw(acc, 1000);
-    transfer(acc, frank, 500.37);
+    transfer_to_account(*p2, frank, 500.37);
+    transfer_to_all(acc, *trust, 3000);
 
     display(acc);
 

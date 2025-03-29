@@ -29,6 +29,7 @@ bool Account::withdraw(double amount) {
 
 bool Account::transfer(Account &to_account, double amount) {
     if(withdraw(amount)) {
+        transaction_history.emplace_back("Account Transfer: " + std::to_string(amount));
         return to_account.deposit(amount);
     }
     return false;
@@ -68,7 +69,11 @@ bool Savings_Account::transfer(Account &to_account, double amount) {
     if(amount < 0) {
         return false;
     }
-    return Account::transfer(to_account, amount);
+    if(Account::transfer(to_account, amount)) {
+        transaction_history.emplace_back("Savings Account Transfer: " + std::to_string(amount));
+        return true;
+    }
+    return false;
 }
 
 void Savings_Account::print(std::ostream &os) const {
@@ -92,6 +97,7 @@ bool Checking_Account::deposit(double amount) {
 bool Checking_Account::transfer(Account &to_account, double amount) {
     double total = amount += per_check_fee;
     if(withdraw(total)) {
+        transaction_history.emplace_back("Checking Account Transfer: " + std::to_string(amount));
         return to_account.deposit(amount);
     }
     return false;
@@ -130,6 +136,7 @@ bool Trust_Account::transfer(Account &to_account, double amount) {
     }
     if(Savings_Account::transfer(to_account, amount)) {
         ++withdrawals_count;
+        transaction_history.emplace_back("Trust Account Transfer: " + std::to_string(amount));
         return true;
     }
     return false;

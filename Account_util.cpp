@@ -29,13 +29,26 @@ void withdraw(std::vector<Account *> &accounts, double amount){
     }
 }
 
-void transfer(std::vector<Account *> &accounts, Account &acc, double amount) {
+void transfer_to_account(Account &account, Account &to_acc, double amount) {
     std::cout << "\n===Transfering to Accounts =================" << std::endl;
-    for(auto i : accounts) {
-        if(i->transfer(acc, amount)) {
-            std::cout << "Trasfered " << amount << " to " << acc << std::endl;
+    std::cout << "\nAccount info before transfer: " << account << '\n';
+    std::cout << "Transfered Account info before transfer: " << to_acc << '\n';
+        if(account.transfer(to_acc, amount)) {
+            std::cout << "Trasfered " << amount << " from " << account << " to " << to_acc << std::endl;
+            std::cout << "\nAccount info before transfer: " << account << '\n';
+            std::cout << "Transfered Account info after transfer: " << to_acc << '\n';
         }else {
-            std::cout << "Failed Transfer of " << amount << " to " << acc << std::endl;
+            std::cout << "Failed Transfer of " << amount << " to " << to_acc << std::endl;
+        }
+}
+
+void transfer_to_all(std::vector<Account *> &account, Account &to_acc, double amount) {
+    std::cout << "\n===Transfering to all Accounts =================" << std::endl;
+    for(const auto &i : account) {
+        if(i->transfer(to_acc, amount)) {
+            std::cout << "Transferred " << amount << " from " << *i << " to " << to_acc << std::endl;
+        }else {
+            std::cout << "Failed Transfer of " << amount << " from " << *i << " to " << to_acc << std::endl;
         }
     }
 }
